@@ -45,6 +45,16 @@ class ReviewListSerialiser(ReviewSerializer):
         fields = ["id", "play_title", "rating", "comment"]
 
 
+class ReviewDetailSerialiser(ReviewListSerialiser):
+    play_title = serializers.CharField(source="play.title", read_only=True)
+    play_description = serializers.CharField(source="play.description", read_only=True)
+    user = serializers.CharField(source="user.email", read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ["id", "play_title", "play_description", "rating", "comment", "user"]
+
+
 class PlaySerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     rating = serializers.SerializerMethodField()

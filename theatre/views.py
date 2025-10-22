@@ -27,7 +27,7 @@ from theatre.serializers import (
     PerformanceListSerializer,
     PerformanceDetailSerializer,
     ReservationListSerializer,
-    ReviewListSerialiser
+    ReviewListSerialiser, ReviewDetailSerialiser
 )
 
 
@@ -46,8 +46,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_serializer_class(self):
-        if self.action in ("list", "retrieve"):
+        if self.action == "list":
             return ReviewListSerialiser
+        elif self.action == "retrieve":
+            return ReviewDetailSerialiser
         return ReviewSerializer
 
     def get_queryset(self):
@@ -57,6 +59,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if play_id_str:
             queryset = queryset.filter(play_id=int(play_id_str))
         return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class PlayViewSet(viewsets.ModelViewSet):
