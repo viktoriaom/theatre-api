@@ -27,7 +27,8 @@ from theatre.serializers import (
     PerformanceListSerializer,
     PerformanceDetailSerializer,
     ReservationListSerializer,
-    ReviewListSerialiser, ReviewDetailSerialiser
+    ReviewListSerialiser,
+    ReviewDetailSerialiser
 )
 
 
@@ -42,7 +43,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    queryset = Review.objects.all()
+    queryset = Review.objects.select_related("play")
     serializer_class = ReviewSerializer
 
     def get_serializer_class(self):
@@ -65,7 +66,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 
 class PlayViewSet(viewsets.ModelViewSet):
-    queryset = Play.objects.all()
+    queryset = Play.objects.prefetch_related("genres", "actors")
     serializer_class = PlaySerializer
 
     @staticmethod
@@ -103,7 +104,7 @@ class PlayViewSet(viewsets.ModelViewSet):
 
 class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = (
-        Performance.objects.all()
+        Performance.objects
         .select_related("play", "theatre_hall")
         .annotate(
             tickets_available=(
@@ -138,11 +139,14 @@ class PerformanceViewSet(viewsets.ModelViewSet):
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = Reservation.objects.all()
+    queryset = (Reservation.objects
+                .prefetch_related("tickets__performance__play",
+                                  "tickets__performance__theatre_hall"))
     serializer_class = ReservationSerializer
 
     def get_queryset(self):
-        return Reservation.objects.filter(user=self.request.user)
+        queryset = self.queryset
+        return queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
