@@ -119,10 +119,39 @@ class PerformanceListSerializer(serializers.ModelSerializer):
         ]
 
 
+class TicketSerializer(serializers.ModelSerializer):
+    def validate(self, attrs):
+        data = super(TicketSerializer, self).validate(attrs=attrs)
+        Ticket.validate_ticket(
+            attrs["row"],
+            attrs["seat"],
+            attrs["performance"].theatre_hall,
+            ValidationError,
+        )
+        return data
+
+    class Meta:
+        model = Ticket
+        fields = ["id", "row", "seat", "performance"]
+
+
+class TicketListSerializer(TicketSerializer):
+    performance = PerformanceListSerializer(many=False, read_only=True)
+
+
+class TicketSeatsSerializer(TicketSerializer):
+    class Meta:
+        model = Ticket
+        fields = ("row", "seat")
+
+
 class PerformanceDetailSerializer(serializers.ModelSerializer):
     play = PlayListSerializer(many=False, read_only=True)
     theatre_hall = TheatreHallSerializer(many=False, read_only=True)
     tickets_available = serializers.IntegerField(read_only=True)
+    taken_seats = TicketSeatsSerializer(source = "tickets",
+                                        many=True,
+                                        read_only=True)
 
     class Meta:
         model = Performance
@@ -132,23 +161,8 @@ class PerformanceDetailSerializer(serializers.ModelSerializer):
             "theatre_hall",
             "show_time",
             "tickets_available",
+            "taken_seats",
         ]
-
-
-class TicketSerializer(serializers.ModelSerializer):
-    def validate(self, attrs):
-        data = super(TicketSerializer, self).validate(attrs=attrs)
-        Ticket.validate_ticket(
-            attrs["row"],
-            attrs["seat"],
-            attrs["movie_session"].cinema_hall,
-            ValidationError,
-        )
-        return data
-
-    class Meta:
-        model = Ticket
-        fields = ["id", "row", "seat", "performance", "reservation"]
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -156,7 +170,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reservation
-        fields = ["id", "created_at", "user", "tickets"]
+        fields = ["id", "created_at", "tickets"]
 
     def create(self, validated_data):
         with transaction.atomic():
@@ -165,3 +179,7 @@ class ReservationSerializer(serializers.ModelSerializer):
             for ticket_data in tickets_data:
                 Ticket.objects.create(reservation=reservation, **ticket_data)
             return reservation
+
+
+class ReservationListSerializer(ReservationSerializer):
+    tickets = TicketListSerializer(many=True, read_only=True)
