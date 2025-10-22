@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
 
@@ -52,7 +53,11 @@ class Play(models.Model):
 
 
 class Review(models.Model):
-    rating = models.IntegerField()
+    rating = models.PositiveIntegerField(
+        default=5,
+        validators=[MinValueValidator(1),
+                    MaxValueValidator(5)]
+    )
     comment = models.TextField()
     play = models.ForeignKey(
         Play,
