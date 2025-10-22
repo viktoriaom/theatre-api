@@ -40,6 +40,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class ReviewListSerialiser(ReviewSerializer):
     play_title = serializers.CharField(source="play.title", read_only=True)
+
     class Meta:
         model = Review
         fields = ["id", "play_title", "rating", "comment"]
@@ -47,12 +48,20 @@ class ReviewListSerialiser(ReviewSerializer):
 
 class ReviewDetailSerialiser(ReviewListSerialiser):
     play_title = serializers.CharField(source="play.title", read_only=True)
-    play_description = serializers.CharField(source="play.description", read_only=True)
+    play_description = serializers.CharField(
+        source="play.description",
+        read_only=True
+    )
     user = serializers.CharField(source="user.email", read_only=True)
 
     class Meta:
         model = Review
-        fields = ["id", "play_title", "play_description", "rating", "comment", "user"]
+        fields = ["id",
+                  "play_title",
+                  "play_description",
+                  "rating",
+                  "comment",
+                  "user"]
 
 
 class PlaySerializer(serializers.ModelSerializer):
@@ -166,7 +175,7 @@ class PerformanceDetailSerializer(serializers.ModelSerializer):
     play = PlayListSerializer(many=False, read_only=True)
     theatre_hall = TheatreHallSerializer(many=False, read_only=True)
     tickets_available = serializers.IntegerField(read_only=True)
-    taken_seats = TicketSeatsSerializer(source = "tickets",
+    taken_seats = TicketSeatsSerializer(source="tickets",
                                         many=True,
                                         read_only=True)
 
@@ -200,3 +209,8 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 class ReservationListSerializer(ReservationSerializer):
     tickets = TicketListSerializer(many=True, read_only=True)
+    user_email = serializers.CharField(source="user.email", read_only=True)
+
+    class Meta:
+        model = Reservation
+        fields = ["id", "created_at", "user_email", "tickets"]
