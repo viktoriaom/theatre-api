@@ -28,7 +28,7 @@ class Genre(models.Model):
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    genres  = models.ManyToManyField(
+    genres = models.ManyToManyField(
         Genre,
         blank=True,
         related_name="plays"
@@ -41,8 +41,8 @@ class Play(models.Model):
 
     @property
     def rating(self):
-        return self.reviews.aggregate(avg_rating=Avg("rating"))["avg_rating"]
-
+        avg = self.reviews.aggregate(avg_rating=Avg("rating"))["avg_rating"]
+        return round(avg) if avg is not None else None
 
     class Meta:
         verbose_name_plural = "Plays"
