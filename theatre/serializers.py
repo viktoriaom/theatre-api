@@ -95,7 +95,13 @@ class PlayListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Play
-        fields = ["id", "title", "description", "genres", "actors", "rating"]
+        fields = ["id",
+                  "title",
+                  "image",
+                  "description",
+                  "genres",
+                  "actors",
+                  "rating"]
 
     def get_rating(self, obj):
         return obj.rating
@@ -111,6 +117,7 @@ class PlayDetailSerializer(serializers.ModelSerializer):
         model = Play
         fields = ["id",
                   "title",
+                  "image",
                   "description",
                   "genres",
                   "actors",
@@ -119,6 +126,12 @@ class PlayDetailSerializer(serializers.ModelSerializer):
 
     def get_rating(self, obj):
         return obj.rating
+
+
+class PlayImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Play
+        fields = ("id", "image")
 
 
 class PerformanceSerializer(serializers.ModelSerializer):
