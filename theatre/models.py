@@ -1,7 +1,11 @@
+import os
+import uuid
+
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
+from django.utils.text import slugify
 
 from theatre_api import settings
 
@@ -25,6 +29,13 @@ class Genre(models.Model):
         return self.name
 
 
+def play_image_file_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    filename = f"{slugify(instance.title)}-{uuid.uuid4()}{extension}"
+
+    return os.path.join("uploads/plays/", filename)
+
+
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -38,6 +49,7 @@ class Play(models.Model):
         blank=True,
         related_name="plays"
     )
+    image = models.ImageField(null=True, upload_to="play_image_file_path")
 
     @property
     def rating(self):
