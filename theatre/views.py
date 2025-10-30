@@ -31,8 +31,8 @@ from theatre.serializers import (
     PerformanceListSerializer,
     PerformanceDetailSerializer,
     ReservationListSerializer,
-    ReviewListSerialiser,
-    ReviewDetailSerialiser, PlayImageSerializer
+    ReviewListSerializer,
+    ReviewDetailSerializer, PlayImageSerializer
 )
 
 
@@ -51,13 +51,13 @@ class GenreViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.select_related("play")
     serializer_class = ReviewSerializer
-    permission_classes = (IsAuthenticated,)
+    http_method_names = ["get", "post", "head", "delete"]
 
     def get_serializer_class(self):
         if self.action == "list":
-            return ReviewListSerialiser
+            return ReviewListSerializer
         elif self.action == "retrieve":
-            return ReviewDetailSerialiser
+            return ReviewDetailSerializer
         return ReviewSerializer
 
     def get_queryset(self):
@@ -70,6 +70,18 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in ("list", "retrieve", "create"):
+            permission_classes = [IsAuthenticated]
+        elif self.action == "destroy":
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = []
+        return [permission() for permission in permission_classes]
 
 
 class PlayViewSet(viewsets.ModelViewSet):
