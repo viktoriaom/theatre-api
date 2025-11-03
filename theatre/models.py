@@ -37,7 +37,7 @@ def play_image_file_path(instance, filename):
 
 
 class Play(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     genres = models.ManyToManyField(
         Genre,
@@ -85,9 +85,11 @@ class Review(models.Model):
     def __str__(self):
         return self.comment
 
+    class Meta:
+        unique_together = ("play", "user")
 
 class TheatreHall(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     rows = models.IntegerField()
     seats_in_row = models.IntegerField()
 
