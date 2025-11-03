@@ -33,6 +33,15 @@ class TheatreHallSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    def validate(self, attrs):
+        user = self.context["request"].user
+        play = attrs.get("play")
+        if Review.objects.filter(user=user, play=play).exists():
+            raise serializers.ValidationError(
+                "You have already reviewed this play."
+            )
+        return attrs
+
     class Meta:
         model = Review
         fields = ["id", "play", "rating", "comment"]
