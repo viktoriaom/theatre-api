@@ -13,7 +13,6 @@ from theatre.models import (
     Play,
     Performance,
     Reservation,
-    Ticket,
     TheatreHall,
 )
 from theatre.permissions import IsAdminOrIfAuthenticatedReadOnly
@@ -24,7 +23,6 @@ from theatre.serializers import (
     PlaySerializer,
     PerformanceSerializer,
     ReservationSerializer,
-    TicketSerializer,
     TheatreHallSerializer,
     PlayListSerializer,
     PlayDetailSerializer,
@@ -72,9 +70,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_permissions(self):
-        """
-        Instantiates and returns the list of permissions that this view requires.
-        """
         if self.action in ("list", "retrieve", "create"):
             permission_classes = [IsAuthenticated]
         elif self.action == "destroy":
@@ -184,7 +179,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
                                   "tickets__performance__theatre_hall",
                                   "user"))
     serializer_class = ReservationSerializer
-    permission_classes = (IsAuthenticated,)
+    http_method_names = ["get", "post", "head", "delete"]
 
     def get_queryset(self):
         queryset = self.queryset
@@ -211,10 +206,14 @@ class ReservationViewSet(viewsets.ModelViewSet):
             return ReservationListSerializer
         return ReservationSerializer
 
-
-class TicketViewSet(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    def get_permissions(self):
+        if self.action in ("list", "retrieve", "create"):
+            permission_classes = [IsAuthenticated]
+        elif self.action == "destroy":
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = []
+        return [permission() for permission in permission_classes]
 
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
