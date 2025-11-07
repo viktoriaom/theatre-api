@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "theatre",
     "user",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -152,6 +153,7 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.UserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "1000/day"},
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(minutes=123456789)}
@@ -159,3 +161,16 @@ SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(minutes=123456789)}
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Theatre Service API",
+    "DESCRIPTION": "Order tickets for performances and leave reviews for plays",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "defaultModelRendering": True,
+        "defaultModelExpandDepth": 2,
+        "defaultModelsExpandDepth": 2,
+    },
+}
