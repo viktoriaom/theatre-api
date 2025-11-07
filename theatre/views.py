@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db.models import F, Count
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -78,6 +79,18 @@ class ReviewViewSet(viewsets.ModelViewSet):
             permission_classes = []
         return [permission() for permission in permission_classes]
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="play",
+                type={"type": "int"},
+                description="Filter by play id (ex. ?play=1)",
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of performances."""
+        return super().list(request, *args, **kwargs)
 
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.prefetch_related("genres", "actors")
@@ -108,6 +121,29 @@ class PlayViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(actors__id__in=actors_ids)
 
         return queryset.distinct()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="title",
+                type={"type": "string"},
+                description="Filter by title (ex. ?title=Hamilton)",
+            ),
+            OpenApiParameter(
+                name="actors",
+                type={"type": "array", "items": {"type": "number"}},
+                description="Filter by actor id (ex. ?actors=2,3)",
+            ),
+            OpenApiParameter(
+                name="genres",
+                type={"type": "array", "items": {"type": "number"}},
+                description="Filter by genre id (ex. ?genres=2,3)",
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of movies."""
+        return super().list(request, *args, **kwargs)
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -172,6 +208,24 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             return PerformanceDetailSerializer
         return PerformanceSerializer
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="play",
+                type={"type": "int"},
+                description="Filter by play id (ex. ?play=1)",
+            ),
+            OpenApiParameter(
+                name="date",
+                type={"type": "string"},
+                description="Filter by date (ex. ?date=2025-12-31)",
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of performances."""
+        return super().list(request, *args, **kwargs)
+
 
 class ReservationViewSet(viewsets.ModelViewSet):
     queryset = (Reservation.objects
@@ -215,6 +269,23 @@ class ReservationViewSet(viewsets.ModelViewSet):
             permission_classes = []
         return [permission() for permission in permission_classes]
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="user",
+                type={"type": "int"},
+                description="Filter by user id (ex. ?user=1)",
+            ),
+            OpenApiParameter(
+                name="performance",
+                type={"type": "int"},
+                description="Filter by performance id (ex. ?tickets__performance=2)",
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of performances."""
+        return super().list(request, *args, **kwargs)
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
