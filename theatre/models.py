@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import Avg
 from django.utils.text import slugify
 
-from theatre_api import settings
+from django.conf import settings
 
 
 class Actor(models.Model):
