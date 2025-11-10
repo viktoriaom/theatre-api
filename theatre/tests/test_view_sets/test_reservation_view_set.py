@@ -19,7 +19,7 @@ from theatre.tests.helpers import (
 )
 
 RESERVATION_URL = reverse("theatre:reservations-list")
-PAGE_SIZE = settings.REST_FRAMEWORK.get("PAGE_SIZE", 10)
+PAGE_SIZE = settings.base.REST_FRAMEWORK.get("PAGE_SIZE", 10)
 
 
 def detail_url(reservation_id):

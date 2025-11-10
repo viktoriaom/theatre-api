@@ -20,7 +20,7 @@ from theatre.tests.helpers import (
     create_test_play
 )
 
-PAGE_SIZE = settings.REST_FRAMEWORK.get("PAGE_SIZE", 10)
+PAGE_SIZE = settings.base.REST_FRAMEWORK.get("PAGE_SIZE", 10)
 PLAY_URL = reverse("theatre:plays-list")
 
 

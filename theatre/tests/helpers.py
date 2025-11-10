@@ -1,8 +1,10 @@
 from uuid import uuid4
 
-from django.utils.timezone import now
+from django.utils.timezone import now, make_aware, is_naive, get_current_timezone
+from django.utils.dateparse import parse_datetime, parse_date
 from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
+from datetime import datetime, time
 
 from theatre.models import (
     Play,
@@ -59,6 +61,25 @@ def create_test_performance(**params) -> Performance:
         "show_time": now(),
     }
     defaults.update(params)
+
+    show_time = defaults["show_time"]
+    if isinstance(show_time, str):
+        parsed = parse_datetime(show_time)
+
+        if parsed is None:
+            date_obj = parse_date(show_time)
+            if date_obj:
+                show_time = datetime.combine(date_obj, time.min)
+            else:
+                raise ValueError(f"Invalid date/datetime string: {show_time}")
+        else:
+            show_time = parsed
+
+    if is_naive(show_time):
+        show_time = make_aware(show_time, timezone=get_current_timezone())
+
+    defaults["show_time"] = show_time
+
     return Performance.objects.create(**defaults)
 
 

@@ -23,7 +23,7 @@ from theatre.tests.helpers import (
 )
 
 PERFORMANCE_URL = reverse("theatre:performances-list")
-PAGE_SIZE = settings.REST_FRAMEWORK.get("PAGE_SIZE", 10)
+PAGE_SIZE = settings.base.REST_FRAMEWORK.get("PAGE_SIZE", 10)
 
 
 def detail_url(performance_id):
@@ -147,14 +147,14 @@ class AuthenticatedPerformanceViewSetTests(TestCase):
                     F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
                     - Count("tickets")
             )
-        ).filter(show_time="2030-12-31")
+        ).filter(show_time__date="2030-12-31")
 
         performances_two = Performance.objects.annotate(
             tickets_available=(
                     F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
                     - Count("tickets")
             )
-        ).filter(show_time="2025-12-31")
+        ).filter(show_time__date="2025-12-31")
 
         res = self.client.get(PERFORMANCE_URL, {"date": "2030-12-31"})
         serializer_one = PerformanceListSerializer(performances_one, many=True)
@@ -190,7 +190,7 @@ class AuthenticatedPerformanceViewSetTests(TestCase):
         payload = {
             "play": play.id,
             "theatre_hall": theatre_hall.id,
-            "show_time": now(),
+            "show_time": now().isoformat(),
         }
         res = self.client.post(PERFORMANCE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
@@ -202,7 +202,7 @@ class AuthenticatedPerformanceViewSetTests(TestCase):
         payload = {
             "play": play.id,
             "theatre_hall": theatre_hall.id,
-            "show_time": now(),
+            "show_time": now().isoformat(),
         }
         res = self.client.put(detail_url(performance.id), payload)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
@@ -210,7 +210,7 @@ class AuthenticatedPerformanceViewSetTests(TestCase):
     def test_patch_performance_not_admin_forbidden(self):
         performance = create_test_performance()
         payload = {
-            "show_time": now()
+            "show_time": now().isoformat()
         }
         res = self.client.patch(detail_url(performance.id), payload)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
@@ -231,16 +231,17 @@ class AdminPerformanceViewSetTests(TestCase):
     def test_create_test_performance_admin(self):
         play = create_test_play()
         theatre_hall = create_test_theatre_hall()
+        show_time = now()
         payload = {
             "play": play.id,
             "theatre_hall": theatre_hall.id,
-            "show_time": now(),
+            "show_time": show_time.isoformat(),
         }
         res = self.client.post(PERFORMANCE_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         performance = Performance.objects.get(show_time=payload["show_time"])
         self.assertEqual(performance.play, play)
-        self.assertEqual(performance.show_time, payload["show_time"])
+        self.assertEqual(performance.show_time, show_time)
         self.assertEqual(performance.theatre_hall, theatre_hall)
 
     def test_create_invalid_performance_admin(self):
@@ -249,12 +250,12 @@ class AdminPerformanceViewSetTests(TestCase):
         payload_with_no_play = {
             "play": "",
             "theatre_hall": theatre_hall.id,
-            "show_time": now(),
+            "show_time": now().isoformat(),
         }
         payload_with_no_theatre_hall = {
             "play": play.id,
             "theatre_hall": "",
-            "show_time": now(),
+            "show_time": now().isoformat(),
         }
         payload_with_no_show_time = {
             "play": play.id,
@@ -271,12 +272,12 @@ class AdminPerformanceViewSetTests(TestCase):
         payload_with_wrong_play = {
             "play": 1234,
             "theatre_hall": theatre_hall.id,
-            "show_time": now(),
+            "show_time": now().isoformat(),
         }
         payload_with_wrong_theatre_hall = {
             "play": play.id,
             "theatre_hall": 1234,
-            "show_time": now(),
+            "show_time": now().isoformat(),
         }
         payload_with_wrong_show_time = {
             "play": play.id,
@@ -294,28 +295,30 @@ class AdminPerformanceViewSetTests(TestCase):
     def test_put_performance_admin(self):
         play = create_test_play()
         theatre_hall = create_test_theatre_hall()
+        show_time = now()
         payload = {
             "play": play.id,
             "theatre_hall": theatre_hall.id,
-            "show_time": now(),
+            "show_time": show_time.isoformat(),
         }
         performance = create_test_performance()
         res = self.client.put(detail_url(performance.id), payload)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         performance.refresh_from_db()
         self.assertEqual(performance.play, play)
-        self.assertEqual(performance.show_time, payload["show_time"])
+        self.assertEqual(performance.show_time, show_time)
         self.assertEqual(performance.theatre_hall, theatre_hall)
 
     def test_patch_performance_admin(self):
         performance = create_test_performance()
+        show_time = now()
         payload = {
-            "show_time": now(),
+            "show_time": show_time.isoformat(),
         }
         res = self.client.patch(detail_url(performance.id), payload)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         performance.refresh_from_db()
-        self.assertEqual(performance.show_time, payload["show_time"])
+        self.assertEqual(performance.show_time, show_time)
 
     def test_delete_performance_admin(self):
         performance = create_test_performance()

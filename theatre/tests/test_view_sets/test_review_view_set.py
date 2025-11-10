@@ -20,7 +20,7 @@ from theatre.tests.helpers import (
 )
 
 REVIEW_URL = reverse("theatre:reviews-list")
-PAGE_SIZE = settings.REST_FRAMEWORK.get("PAGE_SIZE", 10)
+PAGE_SIZE = settings.base.REST_FRAMEWORK.get("PAGE_SIZE", 10)
 
 
 def detail_url(review_id):
