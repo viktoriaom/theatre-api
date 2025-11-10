@@ -10,16 +10,16 @@ create .env file based on the example
 
 ## Local Setup with SQLite
 python3 -m venv venv  
-source venv/bin/activate # creates virtual environment on macOS/Linux    
-venv\Scripts\activate # creates virtual environment on Windows  
+source venv/bin/activate # *creates virtual environment on macOS/Linux*    
+venv\Scripts\activate # *creates virtual environment on Windows*  
 pip install -r requirements.txt  
-python manage.py makemigrations # creates migrations    
-python manage.py migrate # creates DB  
-python manage.py runserver # starts Django server    
+python manage.py makemigrations # *creates migrations*    
+python manage.py migrate # *creates DB*  
+python manage.py runserver # *starts Django server*    
 
 The API will be available at http://127.0.0.1:8000/  
 
-# Optional
+#### Optional
 Load test data into db:  
 python manage.py loaddata fixtures/theatre_data.json
 
@@ -30,7 +30,7 @@ docker-compose up
 
 The API will be available at `http://127.0.0.1:8002/
 
-# Optional
+#### Optional
 Load test data into db:  
 docker-compose exec theatre python manage.py loaddata fixtures/theatre_data.json
 
@@ -38,33 +38,33 @@ docker-compose exec theatre python manage.py loaddata fixtures/theatre_data.json
 ## Getting Access
 * register a new user via api/user/register  
 * get access token via api/user/token  
-* Include the token in your request headers:  
-Authorization: Bearer <your-access-token>
+* include the token in your request headers:  
+Authorization: Bearer "your-access-token"
 
-# Demo Credentials
-For testing purposes only:
+#### Demo Credentials
+For testing purposes only:  
 **email:** first_user@theatre.com  
 **password:** qazxsw
 
 
 ## Features
 ### Core functionality
-* Play Management - Create and manage theatrical productions
-* Reservation System - Book tickets with seat selection
-* Review & Rating - User reviews with automatic rating calculations
-* Performance Scheduling - Schedule and manage show times
-* Theatre Hall Management - Configure venues and seating
+* **Play Management** - Create and manage theatrical productions
+* **Reservation System** - Book tickets with seat selection
+* **Review & Rating** - User reviews with automatic rating calculations
+* **Performance Scheduling** - Schedule and manage show times
+* **Theatre Hall Management** - Configure venues and seating
 
 ### Technical features
-* JWT Authentication - Secure token-based authentication
-* Email-based Login - Username field replaced with email
-* Advanced Filtering - Filter by genre, actor, play, date, user, performance
-* Pagination - Paginated results for large datasets
-* Rate Limiting - API throttling to prevent abuse
-* Image Upload - Attach images to plays
-* Role-based Permissions - Custom permission classes
-* API Documentation - Interactive Swagger/ReDoc docs
-* Comprehensive Tests - Full test coverage for custom features
+* **JWT Authentication** - Secure token-based authentication
+* **Email-based Login** - Username field replaced with email
+* **Advanced Filtering** - Filter by genre, actor, play, date, user, performance
+* **Pagination** - Paginated results for large datasets
+* **Rate Limiting** - API throttling to prevent abuse
+* **Image Upload** - Attach images to plays
+* **Role-based Permissions** - Custom permission classes
+* **API Documentation** - Interactive Swagger/ReDoc docs
+* **Comprehensive Tests** - Full test coverage for custom features
   
 
 ## Built With
