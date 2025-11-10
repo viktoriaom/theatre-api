@@ -1,5 +1,12 @@
 .idea
-venv
+venv/
 **__pycache__
-db.sqlite3
+**db.sqlite3
 media/
+.coverage
+.vscode/
+*.iml
+.env
+.DS_Store
+.pytest_cache/
+**__pycache__/
