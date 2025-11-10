@@ -88,6 +88,7 @@ class Review(models.Model):
     class Meta:
         unique_together = ("play", "user")
 
+
 class TheatreHall(models.Model):
     name = models.CharField(max_length=255, unique=True)
     rows = models.IntegerField()

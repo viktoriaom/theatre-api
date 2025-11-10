@@ -92,6 +92,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         """Get list of performances."""
         return super().list(request, *args, **kwargs)
 
+
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.prefetch_related("genres", "actors")
     serializer_class = PlaySerializer
@@ -286,6 +287,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         """Get list of performances."""
         return super().list(request, *args, **kwargs)
+
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
