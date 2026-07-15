@@ -1,0 +1,408 @@
+[
+  {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$yT63mPojdmvQL0jqeWDvzX$0enzSe4u1bypmWRKAaUVbcBQOqwZIBoXPZVBGbChvBc=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-20T20:17:07.564Z",
+      "email": "first_user@theatre.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OaSYvHDdJpOmWubgJpQhPe$HNAZTY3R7cuzrrOURwR72ffDIcRO+gTAZZYmBhh9BN8=",
+      "last_login": null,
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-10-22T18:31:36.362Z",
+      "email": "theatre_admin@theatre.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$GTdehH3lBsAyOeGtcXdKdR$YoEgu1BPKvehVF3rbJW0g/Acf96699125fAqvDWC+v0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-10-22T19:14:33.984Z",
+      "email": "second_user@theatre.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "theatre.actor",
+    "pk": 1,
+    "fields": {
+      "first_name": "Leonardo",
+      "last_name": "DiCaprio"
+    }
+  },
+  {
+    "model": "theatre.actor",
+    "pk": 2,
+    "fields": {
+      "first_name": "Nicole",
+      "last_name": "Kidman"
+    }
+  },
+  {
+    "model": "theatre.actor",
+    "pk": 3,
+    "fields": {
+      "first_name": "Ewan",
+      "last_name": "McGregor"
+    }
+  },
+  {
+    "model": "theatre.actor",
+    "pk": 4,
+    "fields": {
+      "first_name": "Alexander",
+      "last_name": "Hamilton"
+    }
+  },
+  {
+    "model": "theatre.genre",
+    "pk": 1,
+    "fields": {
+      "name": "action"
+    }
+  },
+  {
+    "model": "theatre.genre",
+    "pk": 2,
+    "fields": {
+      "name": "comedy"
+    }
+  },
+  {
+    "model": "theatre.genre",
+    "pk": 3,
+    "fields": {
+      "name": "kid-friendly"
+    }
+  },
+  {
+    "model": "theatre.genre",
+    "pk": 4,
+    "fields": {
+      "name": "musical"
+    }
+  },
+  {
+    "model": "theatre.play",
+    "pk": 1,
+    "fields": {
+      "title": "Inception",
+      "description": "A skilled thief who steals corporate secrets by entering people's dreams is hired to perform the inverse task: planting an idea into a target's subconscious, but the dangerous mission threatens to trap him in his own subconscious.",
+      "image": "play_image_file_path/capybara.jpg",
+      "genres": [
+        1
+      ],
+      "actors": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "theatre.play",
+    "pk": 2,
+    "fields": {
+      "title": "The Lion King",
+      "description": "Witness the circle of life in Disney’s long-running and multi-award-winning musical in London’s West End at the Lyceum Theatre.",
+      "image": "",
+      "genres": [
+        3
+      ],
+      "actors": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "theatre.play",
+    "pk": 3,
+    "fields": {
+      "title": "Hamilton",
+      "description": "Be in the room where it happens and see Hamilton in London’s West End at the Victoria Palace Theatre.",
+      "image": "",
+      "genres": [
+        4
+      ],
+      "actors": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "theatre.play",
+    "pk": 4,
+    "fields": {
+      "title": "Moulin Rouge",
+      "description": "You can-can-can see Moulin Rouge! The Musical at the Piccadilly Theatre in London’s West End. Discover how the Academy Award-winning film is now a theatre spectacular for the ages.",
+      "image": "",
+      "genres": [
+        4
+      ],
+      "actors": [
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "theatre.review",
+    "pk": 1,
+    "fields": {
+      "rating": 5,
+      "comment": "super fun",
+      "play": 3,
+      "user": 1
+    }
+  },
+  {
+    "model": "theatre.review",
+    "pk": 2,
+    "fields": {
+      "rating": 5,
+      "comment": "the costumes are amazing",
+      "play": 2,
+      "user": 1
+    }
+  },
+  {
+    "model": "theatre.review",
+    "pk": 5,
+    "fields": {
+      "rating": 5,
+      "comment": "such a perfect love story",
+      "play": 4,
+      "user": 3
+    }
+  },
+  {
+    "model": "theatre.review",
+    "pk": 6,
+    "fields": {
+      "rating": 2,
+      "comment": "too much confusion",
+      "play": 1,
+      "user": 3
+    }
+  },
+  {
+    "model": "theatre.theatrehall",
+    "pk": 1,
+    "fields": {
+      "name": "Xenia",
+      "rows": 10,
+      "seats_in_row": 10
+    }
+  },
+  {
+    "model": "theatre.theatrehall",
+    "pk": 2,
+    "fields": {
+      "name": "Andy",
+      "rows": 20,
+      "seats_in_row": 20
+    }
+  },
+  {
+    "model": "theatre.theatrehall",
+    "pk": 3,
+    "fields": {
+      "name": "Viktoria",
+      "rows": 7,
+      "seats_in_row": 16
+    }
+  },
+  {
+    "model": "theatre.theatrehall",
+    "pk": 4,
+    "fields": {
+      "name": "Ruslan",
+      "rows": 25,
+      "seats_in_row": 30
+    }
+  },
+  {
+    "model": "theatre.performance",
+    "pk": 1,
+    "fields": {
+      "play": 3,
+      "theatre_hall": 1,
+      "show_time": "2025-12-10T22:41:00Z"
+    }
+  },
+  {
+    "model": "theatre.performance",
+    "pk": 2,
+    "fields": {
+      "play": 2,
+      "theatre_hall": 2,
+      "show_time": "2025-12-15T17:13:00Z"
+    }
+  },
+  {
+    "model": "theatre.reservation",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-10-21T12:16:06.044Z",
+      "user": 1
+    }
+  },
+  {
+    "model": "theatre.reservation",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-10-21T14:10:43.283Z",
+      "user": 1
+    }
+  },
+  {
+    "model": "theatre.reservation",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-10-21T14:14:10.989Z",
+      "user": 1
+    }
+  },
+  {
+    "model": "theatre.reservation",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-10-22T19:21:21.311Z",
+      "user": 3
+    }
+  },
+  {
+    "model": "theatre.reservation",
+    "pk": 6,
+    "fields": {
+      "created_at": "2025-10-22T19:21:41.165Z",
+      "user": 3
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "seat": 10,
+      "performance": 1,
+      "reservation": 1
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 2,
+    "fields": {
+      "row": 1,
+      "seat": 9,
+      "performance": 1,
+      "reservation": 1
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 5,
+    "fields": {
+      "row": 2,
+      "seat": 6,
+      "performance": 1,
+      "reservation": 3
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 6,
+    "fields": {
+      "row": 2,
+      "seat": 7,
+      "performance": 1,
+      "reservation": 3
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 7,
+    "fields": {
+      "row": 1,
+      "seat": 10,
+      "performance": 2,
+      "reservation": 4
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 8,
+    "fields": {
+      "row": 1,
+      "seat": 9,
+      "performance": 2,
+      "reservation": 4
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 9,
+    "fields": {
+      "row": 2,
+      "seat": 1,
+      "performance": 1,
+      "reservation": 5
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 10,
+    "fields": {
+      "row": 2,
+      "seat": 2,
+      "performance": 1,
+      "reservation": 5
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 11,
+    "fields": {
+      "row": 2,
+      "seat": 1,
+      "performance": 2,
+      "reservation": 6
+    }
+  },
+  {
+    "model": "theatre.ticket",
+    "pk": 12,
+    "fields": {
+      "row": 2,
+      "seat": 2,
+      "performance": 2,
+      "reservation": 6
+    }
+  }
+]

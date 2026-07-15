@@ -1,0 +1,13 @@
+[flake8]
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    migrations
+max-line-length = 88
+per-file-ignores =
+    # Django settings pattern - allow star imports
+    theatre_api/settings/dev.py:F403,F405
+    theatre_api/settings/prod.py:F403,F405
+    # Allow star imports in __init__.py files
+    */__init__.py:F403,F405
